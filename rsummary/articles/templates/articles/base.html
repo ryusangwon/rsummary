@@ -1,25 +1,38 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>코스토랑</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href={% static 'articles/css/styles.css' %}>
-    </head>
-    <body>
-        <div>
-            {% block date-block %}
-            {% endblock %}
+    <title>Articles</title>
+    <meta charset="UTF-8">
+    {% block css %}
+    {% endblock css %}
+    <link rel="stylesheet" type="text/css"
+    href="https://fonts.googleapis.com/earlyaccess/nanummyeongjo.css">
+</head>
+<body>
+    <div id="warp">
+        <div id="header">
+            <div id="nav">
+                <div class="logo">
+                    <a href={% url 'article-list' %}><img src="{% static 'articles/images/logo.png' %}"></a>
+                </div>
+            </div>
+            {% block article_header %}
+            {% endblock article_header %}
         </div>
-    
-    <hr/>
-
-    <h1>코스토랑</h1>
-    <h2>넌 코딩할때가 제일 이뻐</h2>
-    
-    <div class="food-container">
-        {% block food-container %}
-        {% endblock %}
+        {% block logo_text %}
+        {% endblock logo_text %}
+        <div id="content">
+            <div class="container">
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </div>
+        <div id="footer">
+            <div class="footer">
+                <p>Costory</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
