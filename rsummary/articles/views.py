@@ -20,10 +20,11 @@ def article_detail(request, article_id):
 def article_create(request):
     if request.method == "POST":
         article_form = ArticleForm(request.POST)
-        new_article = article_form.save()
-        return redirect('article-detail', article_id=new_article.id)
+        if article_form.is_valid():
+            new_article = article_form.save()
+            return redirect('article-detail', article_id=new_article.id)
     else:
         article_form = ArticleForm()
-        context = {}
-        context['form'] = article_form
-        return render(request, "articles/article_form.html", context=context)
+    context = {}
+    context['form'] = article_form
+    return render(request, "articles/article_form.html", context=context)
