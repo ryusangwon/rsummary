@@ -1,6 +1,8 @@
 from django import forms
+from .models import Article
 
-class ArticleForm(forms.Form):
-    title = forms.CharField(max_length=50, label="제목")
-    content = forms.CharField(label="내용", widget=forms.Textarea)
+class ArticleForm(forms.ModelForm):
     
+    class Meta:
+        model = Article
+        fields = ['title', 'content'] # __all__

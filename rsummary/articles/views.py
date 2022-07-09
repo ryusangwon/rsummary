@@ -19,13 +19,8 @@ def article_detail(request, article_id):
 
 def article_create(request):
     if request.method == "POST":
-        title = request.POST['title']
-        content = request.POST['content']
-        new_article = Article(
-            title = title,
-            content = content,
-        )
-        new_article.save()
+        article_form = ArticleForm(request.POST)
+        new_article = article_form.save()
         return redirect('article-detail', article_id=new_article.id)
     else:
         article_form = ArticleForm()
