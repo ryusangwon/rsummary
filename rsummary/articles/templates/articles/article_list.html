@@ -15,9 +15,12 @@
 
 
 {% block content %}
+    <div class="btn_article">
+        <a href="{% url 'article-create' %}">글쓰기</a>
+    </div>
     <div class="article_container">
             {% for article in articles %}
-            <div class="post"><a href="{% url 'article-detail' article.id %}">         
+            <div class="article"><a href="{% url 'article-detail' article.id %}">         
                 <h2 class="title">{{article.title}}</h2>
                 <p class="date">{{article.dt_created}}</p>
                 <p class="text">{{article.content}}</p>
