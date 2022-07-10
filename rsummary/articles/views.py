@@ -28,3 +28,16 @@ def article_create(request):
     context = {}
     context['form'] = article_form
     return render(request, "articles/article_form.html", context=context)
+
+def article_update(request, article_id):
+    article = Article.objects.get(id=article_id)
+    if request.method == "POST":
+        article_form = ArticleForm(request.POST, instance=article)
+        if article_form.is_valid():
+            article_form.save()
+            return redirect('article-detail', article_id=article.id)
+    else:
+        article_form = ArticleForm(instance=article)
+    context = {}
+    context["form"] = article_form
+    return render(request, "articles/article_form.html", context=context)
