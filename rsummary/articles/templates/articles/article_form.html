@@ -2,8 +2,7 @@
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'articles/css/article_
-    form.css' %}">
+    <link rel="stylesheet" href="{% static 'articles/css/article_form.css' %}">
 {% endblock css %}
 
 {% block article_header %}
@@ -22,7 +21,6 @@
             {% for error in form.title.errors %}
                 <p class="error">{{error}}</p>
             {% endfor %}
-\
             <p>{{form.content}}</p>
             {% for error in form.content.errors %}
                 <p class="error">{{error}}</p>
