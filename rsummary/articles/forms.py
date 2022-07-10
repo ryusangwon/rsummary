@@ -9,6 +9,13 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['title', 'content'] # __all__
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'title',
+                'placeholder': 'Please enter a title'}),
+            'content': forms.Textarea(attrs={
+                'placeholder': 'Please enter a content'})
+            }
         
     def clean_title(self):
         title = self.cleaned_data['title']
