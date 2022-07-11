@@ -26,6 +26,9 @@
                 <div class="btn_modify">
                     <a href="{% url "article-update" article.id %}">수정</a>
                 </div>
+                <div class="btn_delete">
+                    <a href="{% url "article-delete" article.id %}">삭제</a>
+                </div>
             </div>
     </div>
 {% endblock content %}

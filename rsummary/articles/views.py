@@ -41,3 +41,16 @@ def article_update(request, article_id):
     context = {}
     context["form"] = article_form
     return render(request, "articles/article_form.html", context=context)
+
+def article_delete(request, article_id):
+    article = Article.objects.get(id=article_id)
+    if request.method=="POST":
+        article.delete()
+        return redirect('article-list')
+    else:
+        context={}
+        context['article'] = article
+        return render(request, 'articles/article_confirm_delete.html', context=context)
+
+def index(request):
+    return redirect("article-list")
