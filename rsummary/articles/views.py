@@ -1,5 +1,5 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.http import Http404, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Article
 from .forms import ArticleForm
@@ -12,7 +12,12 @@ def article_list(request):
     return render(request, 'articles/article_list.html', context=context)
 
 def article_detail(request, article_id):
-    article = Article.objects.get(id=article_id)
+    # try:
+    #     article = Article.objects.get(id=article_id)
+    # except Article.DoesNotExist:
+    #     raise Http404()
+    article = get_object_or_404(Article, id=article_id)
+    
     context = {}
     context['article'] = article
     return render(request, 'articles/article_detail.html', context=context)
