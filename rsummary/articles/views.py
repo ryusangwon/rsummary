@@ -3,12 +3,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Article
 from .forms import ArticleForm
+from django.core.paginator import Paginator
 
 # Create your views here.
 def article_list(request):
     articles = Article.objects.all()
+    paginator = Paginator(articles, 6)
+    curr_page_number = request.GET.get('page')
+    if curr_page_number is None:
+        curr_page_number = 1
+    page = paginator.page(curr_page_number)
+    
     context = {}
-    context['articles'] = articles
+    context['page'] = page
     return render(request, 'articles/article_list.html', context=context)
 
 def article_detail(request, article_id):
@@ -35,7 +42,7 @@ def article_create(request):
     return render(request, "articles/article_form.html", context=context)
 
 def article_update(request, article_id):
-    article = Article.objects.get(id=article_id)
+    article = get_object_or_404(Article, id=article_id)
     if request.method == "POST":
         article_form = ArticleForm(request.POST, instance=article)
         if article_form.is_valid():
@@ -48,7 +55,7 @@ def article_update(request, article_id):
     return render(request, "articles/article_form.html", context=context)
 
 def article_delete(request, article_id):
-    article = Article.objects.get(id=article_id)
+    article = get_object_or_404(Article, id=article_id)
     if request.method=="POST":
         article.delete()
         return redirect('article-list')

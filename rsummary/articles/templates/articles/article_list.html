@@ -18,15 +18,28 @@
     <div class="btn_article">
         <a href="{% url 'article-create' %}">글쓰기</a>
     </div>
-{% if articles %}
+{% if page.object_list %}
     <div class="article_container">
-        {% for article in articles %}
-        <div class="article"><a href="{% url 'article-detail' article.id %}">         
-            <h2 class="title">{{article.title}}</h2>
-            <p class="date">{{article.dt_created}}</p>
-            <p class="text">{{article.content}}</p>
-        </a></div>
-    {% endfor %}
+        {% for article in page.object_list %}
+            <div class="article"><a href="{% url 'article-detail' article.id %}">         
+                <h2 class="title">{{article.title}}</h2>
+                <p class="date">{{article.dt_created}}</p>
+                <p class="text">{{article.content}}</p>
+            </a></div>
+        {% endfor %}
+    </div>
+    <div class="paging">
+        {% if page.has_previous %}
+            <a href="?page=1" class="first"><<</a>
+            <a href="?page={{page.previous_page_number}}" class="prev">{{page.previous_page_number}}</a>
+        {% endif %}
+        <span>
+            <p>{{page.number}} of {{page.paginator.num_pages}}</p>
+        </span>
+        {% if page.has_next %}
+            <a href="?page={{page.next_page_number}}" class="next">{{page.next_page_number}}</a>
+            <a href="?page={{page.paginator.num_pages}}" class="last">>></a>
+        {% endif %}
     </div>
 {% else %}
     <div class="blank">
