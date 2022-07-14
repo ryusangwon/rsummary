@@ -1,9 +1,12 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.core.paginator import Paginator
+from django.views import View
+from django.views.generic import CreateView
+from django.urls import reverse
 from .models import Article
 from .forms import ArticleForm
-from django.core.paginator import Paginator
 
 # Create your views here.
 def article_list(request):
@@ -13,7 +16,6 @@ def article_list(request):
     if curr_page_number is None:
         curr_page_number = 1
     page = paginator.page(curr_page_number)
-    
     context = {}
     context['page'] = page
     return render(request, 'articles/article_list.html', context=context)
@@ -29,17 +31,42 @@ def article_detail(request, article_id):
     context['article'] = article
     return render(request, 'articles/article_detail.html', context=context)
 
-def article_create(request):
-    if request.method == "POST":
-        article_form = ArticleForm(request.POST)
-        if article_form.is_valid():
-            new_article = article_form.save()
-            return redirect('article-detail', article_id=new_article.id)
-    else:
-        article_form = ArticleForm()
-    context = {}
-    context['form'] = article_form
-    return render(request, "articles/article_form.html", context=context)
+# def article_create(request):
+#     if request.method == "POST":
+#         article_form = ArticleForm(request.POST)
+#         if article_form.is_valid():
+#             new_article = article_form.save()
+#             return redirect('article-detail', article_id=new_article.id)
+#     else:
+#         article_form = ArticleForm()
+#     context = {}
+#     context['form'] = article_form
+#     return render(request, "articles/article_form.html", context=context)
+
+# class ArticleCreateView(View):
+    
+#     def get(self, request):
+#         article_form = ArticleForm()
+#         context = {}
+#         context['form'] = article_form
+#         return render(request, "articles/article_form.html", context=context)
+    
+#     def post(self, request):
+#         article_form = ArticleForm(request.POST)
+#         if article_form.is_valid():
+#             new_article = article_form.save()
+#             return redirect('article-detail', article_id=new_article.id)
+#         context = {}
+#         context['form'] = article_form
+#         return render(request, "article/article_form.html", context=context)
+
+class ArticleCreateView(CreateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = "articles/article_form.html"
+    
+    def get_success_url(self):
+        return reverse('article-detail', kwargs={'article_id': self.object.id})
 
 def article_update(request, article_id):
     article = get_object_or_404(Article, id=article_id)
